@@ -63,7 +63,6 @@ function SetupScreen({ onStart }) {
         <p className='ss-sub'>
           Nhập link Google Sheet chứa câu hỏi để bắt đầu!
         </p>
-
         <label className='ss-label'>🔗 Link Google Sheet</label>
         <input
           className='ss-input'
@@ -76,7 +75,6 @@ function SetupScreen({ onStart }) {
           }}
           onKeyDown={e => e.key === 'Enter' && handleLoad()}
         />
-
         {error && (
           <div className='ss-error'>
             {error.split('\n').map((l, i) => (
@@ -84,11 +82,9 @@ function SetupScreen({ onStart }) {
             ))}
           </div>
         )}
-
         <button className='ss-btn' onClick={handleLoad} disabled={loading}>
           {loading ? '⏳ Đang tải câu hỏi...' : '🚀 Bắt đầu chơi!'}
         </button>
-
         <div className='ss-guide'>
           <div className='ss-guide-title'>📋 Cách chuẩn bị Google Sheet</div>
           <div className='ss-steps'>
@@ -131,6 +127,7 @@ function GameScreen({ questions: raw, onBack }) {
   const [camReady, setCamReady] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [tiltDir, setTiltDir] = useState(null);
+  const cameraRef = useRef(null);
   const TOTAL = questions.length;
 
   const answer = useCallback(
@@ -145,6 +142,7 @@ function GameScreen({ questions: raw, onBack }) {
         setTiltDir(null);
         const next = indexRef.current + 1;
         if (next >= TOTAL) {
+          cameraRef.current?.stop();
           setGameOver(true);
         } else {
           indexRef.current = next;
@@ -195,16 +193,13 @@ function GameScreen({ questions: raw, onBack }) {
           y1 = Math.max(y1, p.y);
         });
         const [w, h] = [canvas.width, canvas.height];
-        ctx.strokeStyle = 'rgba(0,220,150,0.85)';
-        ctx.lineWidth = 3;
+        // Mirror X để khớp với webcam đã mirror
+        const rx = (1 - x1) * w;
+        const rw = (x1 - x0) * w;
+        ctx.strokeStyle = 'lime';
+        ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.roundRect(
-          x0 * w - 10,
-          y0 * h - 10,
-          (x1 - x0) * w + 20,
-          (y1 - y0) * h + 20,
-          12
-        );
+        ctx.roundRect(rx - 10, y0 * h - 10, rw + 20, (y1 - y0) * h + 20, 12);
         ctx.stroke();
         if (lockedRef.current) return;
         const tilt = lm[263].y - lm[33].y;
@@ -221,13 +216,19 @@ function GameScreen({ questions: raw, onBack }) {
           if (webcamRef.current?.video)
             await fm.send({ image: webcamRef.current.video });
         },
-        width: 440,
-        height: 330
+        width: 640,
+        height: 480
       });
-      camera.start().then(() => setCamReady(true));
+      camera.start().then(() => {
+        cameraRef.current = camera;
+        setCamReady(true);
+      });
     };
     init();
-    return () => camera?.stop();
+    return () => {
+      camera?.stop();
+      cameraRef.current = null;
+    };
   }, []);
 
   if (gameOver) {
@@ -250,19 +251,13 @@ function GameScreen({ questions: raw, onBack }) {
           <div className='gs-gameover-pct'>{pct}% đúng</div>
           <p className='gs-gameover-msg'>{msg}</p>
           <div className='gs-gameover-btns'>
-            <button className='gs-replay-btn secondary' onClick={onBack}>
+            <button
+              className='gs-replay-btn secondary'
+              onClick={() => onBack('back')}
+            >
               🏠 Đổi câu hỏi
             </button>
-            <button
-              className='gs-replay-btn'
-              onClick={() => {
-                indexRef.current = 0;
-                setIndex(0);
-                setScore(0);
-                setGameOver(false);
-                lockedRef.current = false;
-              }}
-            >
+            <button className='gs-replay-btn' onClick={() => onBack('replay')}>
               🔄 Chơi lại
             </button>
           </div>
@@ -272,117 +267,78 @@ function GameScreen({ questions: raw, onBack }) {
   }
 
   const q = questions[index];
-  const aCorrect = result && q.correct === 'a',
-    bCorrect = result && q.correct === 'b';
-  const aWrong = result === 'wrong' && tiltDir === 'left',
-    bWrong = result === 'wrong' && tiltDir === 'right';
-
   return (
-    <div className='gs-page'>
-      <div className='gs-header'>
-        <button className='gs-back-btn' onClick={onBack}>
-          ← Đổi câu hỏi
-        </button>
-        <h1 className='gs-title'>🎯 Nghiêng Đầu Trả Lời</h1>
-        <div className='gs-score-badge'>⭐ {score} điểm</div>
+    <div className='gs-page' style={{ position: 'relative' }}>
+      <button className='gs-back-btn' onClick={() => onBack('back')}>
+        ← Đổi câu hỏi
+      </button>
+
+      {/* Title */}
+      <div className='gs-title-row'>
+        <h1 className='gs-title'>🎮 Nghiêng Đầu Trả Lời</h1>
       </div>
 
-      <div className='gs-progress-row'>
-        <div className='gs-progress-bar'>
-          <div
-            className='gs-progress-fill'
-            style={{ width: `${(index / TOTAL) * 100}%` }}
-          />
-        </div>
-        <span className='gs-progress-txt'>
-          {index + 1} / {TOTAL}
-        </span>
+      {/* Score */}
+      <div className='gs-score'>⭐ Điểm: {score}</div>
+
+      {/* Camera */}
+      <div className='gs-cam-wrap'>
+        <Webcam
+          ref={webcamRef}
+          className='gs-webcam'
+          mirrored
+          videoConstraints={{ width: 640, height: 480 }}
+        />
+        <canvas
+          ref={canvasRef}
+          width={640}
+          height={480}
+          className='gs-overlay'
+        />
       </div>
 
-      <div className='gs-layout'>
-        <div className='gs-cam-section'>
-          <div className='gs-cam-wrap'>
-            <Webcam
-              ref={webcamRef}
-              className='gs-webcam'
-              mirrored
-              videoConstraints={{ width: 440, height: 330 }}
-            />
-            <canvas
-              ref={canvasRef}
-              width={440}
-              height={330}
-              className='gs-overlay'
-            />
-            <div
-              className='gs-arrow gs-arrow-l'
-              style={{ opacity: tiltDir === 'left' ? 1 : 0.22 }}
-            >
-              ⬅️
-            </div>
-            <div
-              className='gs-arrow gs-arrow-r'
-              style={{ opacity: tiltDir === 'right' ? 1 : 0.22 }}
-            >
-              ➡️
-            </div>
-          </div>
-          <div className='gs-face-status'>
-            {!camReady ? (
-              '⏳ Đang khởi động camera...'
-            ) : faceDetected ? (
-              <span style={{ color: '#0be881' }}>
-                🟢 Đã nhận diện khuôn mặt
-              </span>
-            ) : (
-              <span style={{ color: '#ff7675' }}>
-                🔴 Hãy nhìn vào camera nhé!
-              </span>
-            )}
-          </div>
-        </div>
+      {/* Face status */}
+      <div className='gs-face-status'>
+        {!camReady ? (
+          '⏳ Đang khởi động camera...'
+        ) : faceDetected ? (
+          <span className='gs-face-ok'>🟢 Đã nhận diện khuôn mặt</span>
+        ) : (
+          <span className='gs-face-no'>🔴 Hãy nhìn vào camera nhé!</span>
+        )}
+      </div>
 
-        <div className='gs-q-section'>
-          <div className='gs-q-card'>
-            <div className='gs-q-num'>
-              Câu {index + 1} / {TOTAL}
-            </div>
-            <div className='gs-q-text'>{q.question}</div>
-          </div>
-          <div className='gs-hint'>Nghiêng đầu để chọn!</div>
-          <div className='gs-answers'>
-            <div
-              className={`gs-answer gs-ans-l ${
-                aCorrect ? 'gs-correct-hl' : ''
-              } ${aWrong ? 'gs-wrong-hl' : ''}`}
-            >
-              <div className='gs-ans-arrow'>⬅️</div>
-              <div className='gs-ans-label'>Nghiêng TRÁI</div>
-              <div className='gs-ans-text'>{q.a}</div>
-            </div>
-            <div
-              className={`gs-answer gs-ans-r ${
-                bCorrect ? 'gs-correct-hl' : ''
-              } ${bWrong ? 'gs-wrong-hl' : ''}`}
-            >
-              <div className='gs-ans-arrow'>➡️</div>
-              <div className='gs-ans-label'>Nghiêng PHẢI</div>
-              <div className='gs-ans-text'>{q.b}</div>
-            </div>
-          </div>
-          <div className='gs-result-area'>
-            {result === 'correct' && (
-              <div className='gs-result-popup gs-correct-pop bounce-in'>
-                🎉 Đúng rồi! Giỏi quá!
-              </div>
-            )}
-            {result === 'wrong' && (
-              <div className='gs-result-popup gs-wrong-pop shake'>
-                ❌ Sai rồi! Cố lên!
-              </div>
-            )}
-          </div>
+      {/* Question */}
+      <div className='gs-q-card'>{q.question}</div>
+
+      {/* Answers */}
+      <div className='gs-answers'>
+        <div
+          className={`gs-answer gs-ans-l ${
+            result && q.correct === 'a' ? 'gs-correct-hl' : ''
+          } ${result === 'wrong' && tiltDir === 'left' ? 'gs-wrong-hl' : ''}`}
+        >
+          ⬅️ {q.a}
         </div>
+        <div
+          className={`gs-answer gs-ans-r ${
+            result && q.correct === 'b' ? 'gs-correct-hl' : ''
+          } ${result === 'wrong' && tiltDir === 'right' ? 'gs-wrong-hl' : ''}`}
+        >
+          {q.b} ➡️
+        </div>
+      </div>
+
+      {/* Result */}
+      <div className='gs-result-area'>
+        {result === 'correct' && (
+          <div className='gs-result-popup gs-correct-pop bounce-in'>
+            🎉 Đúng rồi!
+          </div>
+        )}
+        {result === 'wrong' && (
+          <div className='gs-result-popup gs-wrong-pop shake'>❌ Sai rồi!</div>
+        )}
       </div>
     </div>
   );
@@ -391,9 +347,21 @@ function GameScreen({ questions: raw, onBack }) {
 // ── Root ──────────────────────────────────────────────────────────────────────
 export default function AppV2() {
   const [questions, setQuestions] = useState(null);
+  const [gameKey, setGameKey] = useState(0);
+
+  function handleBack(action) {
+    if (action === 'replay') setGameKey(k => k + 1);
+    else setQuestions(null);
+  }
+
   return questions ? (
-    <GameScreen questions={questions} onBack={() => setQuestions(null)} />
+    <GameScreen key={gameKey} questions={questions} onBack={handleBack} />
   ) : (
-    <SetupScreen onStart={setQuestions} />
+    <SetupScreen
+      onStart={q => {
+        setGameKey(0);
+        setQuestions(q);
+      }}
+    />
   );
 }
