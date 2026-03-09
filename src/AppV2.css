@@ -1,0 +1,526 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap');
+
+/* ── Reset & Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Baloo 2', cursive;
+  background: linear-gradient(135deg, #0be881 0%, #0fbcf9 60%, #00d2d3 100%);
+  min-height: 100vh;
+}
+input:focus {
+  outline: none;
+}
+
+/* ── Animations ── */
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+}
+.bounce-in {
+  animation: bounceIn 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.shake {
+  animation: shake 0.45s ease-in-out;
+}
+
+/* ══════════════════════════════
+   SETUP SCREEN
+══════════════════════════════ */
+.ss-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.ss-card {
+  background: white;
+  border-radius: 24px;
+  padding: 36px 40px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+.ss-icon {
+  font-size: 52px;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.ss-title {
+  margin: 0 0 4px;
+  font-size: 30px;
+  font-weight: 800;
+  color: #0a3d2e;
+  text-align: center;
+}
+.ss-sub {
+  margin: 0 0 24px;
+  color: #4a7c68;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ss-label {
+  display: block;
+  font-weight: 700;
+  color: #0a6640;
+  font-size: 14px;
+  margin-bottom: 7px;
+}
+.ss-input {
+  width: 100%;
+  padding: 13px 15px;
+  border-radius: 12px;
+  border: 2px solid #b2dfdb;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3436;
+  font-family: 'Baloo 2', cursive;
+  transition: border-color 0.2s;
+  margin-bottom: 10px;
+}
+.ss-input:focus {
+  border-color: #00b894;
+}
+
+.ss-error {
+  background: #fff5f5;
+  color: #c0392b;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+.ss-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 14px;
+  border: none;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  background: linear-gradient(135deg, #00b894, #00cec9);
+  color: white;
+  box-shadow: 0 5px 18px rgba(0, 184, 148, 0.4);
+  margin-bottom: 22px;
+  font-family: 'Baloo 2', cursive;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.ss-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.ss-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ss-guide {
+  background: #f0faf6;
+  border-radius: 14px;
+  padding: 18px 20px;
+  border: 1.5px solid #b2dfdb;
+}
+.ss-guide-title {
+  font-weight: 800;
+  color: #0a6640;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+.ss-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.ss-step {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d3436;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.ss-step-num {
+  background: #00b894;
+  color: white;
+  border-radius: 50%;
+  width: 21px;
+  height: 21px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.ss-code {
+  background: #1e3a2f;
+  color: #a8f0d8;
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-size: 11px;
+  margin: 3px 0 3px 30px;
+  font-family: monospace;
+  overflow-x: auto;
+  white-space: pre;
+}
+.ss-note {
+  font-size: 12px;
+  color: #4a7c68;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+/* ══════════════════════════════
+   GAME SCREEN
+══════════════════════════════ */
+.gs-page {
+  min-height: 100vh;
+  padding: 14px;
+  font-family: 'Baloo 2', cursive;
+}
+
+.gs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: 0 auto 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gs-back-btn {
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  color: white;
+  border-radius: 10px;
+  padding: 6px 13px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Baloo 2', cursive;
+  transition: background 0.2s;
+}
+.gs-back-btn:hover {
+  background: rgba(255, 255, 255, 0.38);
+}
+.gs-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.gs-score-badge {
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(8px);
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 5px 18px;
+  border-radius: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+}
+
+.gs-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 1000px;
+  margin: 0 auto 14px;
+}
+.gs-progress-bar {
+  flex: 1;
+  height: 11px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.gs-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f9ca24, #f0932b);
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+.gs-progress-txt {
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.gs-layout {
+  display: flex;
+  gap: 18px;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Camera */
+.gs-cam-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.gs-cam-wrap {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 4px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+  width: 440px;
+  height: 330px;
+}
+.gs-webcam {
+  width: 440px;
+  height: 330px;
+  display: block;
+  transform: scaleX(-1);
+}
+.gs-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.gs-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 44px;
+  transition: opacity 0.15s;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+.gs-arrow-l {
+  left: 7px;
+}
+.gs-arrow-r {
+  right: 7px;
+}
+.gs-face-status {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+/* Question */
+.gs-q-section {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.gs-q-card {
+  background: white;
+  border-radius: 18px;
+  padding: 18px 22px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12);
+}
+.gs-q-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #00b894;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+.gs-q-text {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a3c2e;
+  line-height: 1.3;
+}
+.gs-hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.12);
+  padding: 5px 14px;
+  border-radius: 20px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.gs-answers {
+  display: flex;
+  gap: 10px;
+}
+.gs-answer {
+  flex: 1;
+  border-radius: 16px;
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+  border: 3px solid transparent;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.gs-ans-l {
+  background: linear-gradient(135deg, #00b894, #00cec9);
+  color: white;
+}
+.gs-ans-r {
+  background: linear-gradient(135deg, #0fbcf9, #0652dd);
+  color: white;
+}
+.gs-correct-hl {
+  border-color: #f9ca24 !important;
+  box-shadow: 0 0 20px rgba(249, 202, 36, 0.65) !important;
+  transform: scale(1.05);
+}
+.gs-wrong-hl {
+  border-color: #e74c3c !important;
+  opacity: 0.65;
+}
+.gs-ans-arrow {
+  font-size: 28px;
+  margin-bottom: 3px;
+}
+.gs-ans-label {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.88;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.gs-ans-text {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.gs-result-area {
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gs-result-popup {
+  padding: 10px 24px;
+  border-radius: 14px;
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.18);
+}
+.gs-correct-pop {
+  background: linear-gradient(135deg, #00b894, #00cec9);
+}
+.gs-wrong-pop {
+  background: linear-gradient(135deg, #d63031, #e17055);
+}
+
+/* Game Over */
+.gs-gameover-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.gs-gameover-card {
+  background: white;
+  border-radius: 24px;
+  padding: 44px 40px;
+  text-align: center;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 16px 52px rgba(0, 0, 0, 0.18);
+}
+.gs-gameover-emoji {
+  font-size: 72px;
+}
+.gs-gameover-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a3c2e;
+  margin: 10px 0 6px;
+}
+.gs-gameover-score {
+  font-size: 66px;
+  font-weight: 800;
+  color: #00b894;
+  line-height: 1;
+}
+.gs-gameover-pct {
+  font-size: 22px;
+  color: #4a7c68;
+  font-weight: 600;
+  margin-top: 3px;
+}
+.gs-gameover-msg {
+  font-size: 18px;
+  color: #2d3436;
+  margin: 18px 0;
+  font-weight: 600;
+}
+.gs-gameover-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.gs-replay-btn {
+  background: linear-gradient(135deg, #00b894, #00cec9);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 5px 18px rgba(0, 184, 148, 0.38);
+  font-family: 'Baloo 2', cursive;
+  transition: transform 0.15s;
+}
+.gs-replay-btn:hover {
+  transform: translateY(-2px);
+}
+.gs-replay-btn.secondary {
+  background: linear-gradient(135deg, #636e72, #b2bec3);
+  box-shadow: none;
+}
