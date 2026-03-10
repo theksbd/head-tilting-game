@@ -37,16 +37,29 @@ input:focus {
     transform: translateX(0);
   }
   20% {
-    transform: translateX(-8px);
+    transform: translateX(-10px);
   }
   40% {
-    transform: translateX(8px);
+    transform: translateX(10px);
   }
   60% {
-    transform: translateX(-5px);
+    transform: translateX(-6px);
   }
   80% {
-    transform: translateX(5px);
+    transform: translateX(6px);
+  }
+}
+@keyframes popIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 .bounce-in {
@@ -54,6 +67,67 @@ input:focus {
 }
 .shake {
   animation: shake 0.45s ease-in-out;
+}
+
+/* ── Countdown overlay ── */
+.countdown-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.countdown-box {
+  text-align: center;
+}
+.countdown-label {
+  font-size: 38px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+.countdown-num {
+  font-size: 140px;
+  font-weight: 800;
+  color: #f9ca24;
+  line-height: 1;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  animation: popIn 0.4s ease;
+}
+
+/* ── Language toggle ── */
+.lang-btn {
+  display: block;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, #0fbcf9, #0652dd);
+  color: white;
+  border: none;
+  border-radius: 22px;
+  padding: 10px 24px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Baloo 2', cursive;
+  box-shadow: 0 3px 10px rgba(6, 82, 221, 0.3);
+  transition: transform 0.15s;
+}
+.lang-btn:hover {
+  transform: translateY(-1px);
+}
+.lang-btn-game {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  margin: 0;
+  font-size: 15px;
+  padding: 7px 16px;
+}
+.lang-btn-gameover {
+  margin-bottom: 20px;
 }
 
 /* ══ SETUP SCREEN ══════════════════════════════════════════════════════════ */
@@ -68,18 +142,18 @@ input:focus {
   background: white;
   border-radius: 24px;
   padding: 36px 40px;
-  max-width: 560px;
+  max-width: 620px;
   width: 100%;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
 }
 .ss-icon {
-  font-size: 52px;
+  font-size: 64px;
   text-align: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .ss-title {
-  margin: 0 0 4px;
-  font-size: 30px;
+  margin: 0 0 6px;
+  font-size: 40px;
   font-weight: 800;
   color: #0a3d2e;
   text-align: center;
@@ -87,7 +161,7 @@ input:focus {
 .ss-sub {
   margin: 0 0 24px;
   color: #4a7c68;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
   text-align: center;
 }
@@ -95,20 +169,20 @@ input:focus {
   display: block;
   font-weight: 700;
   color: #0a6640;
-  font-size: 14px;
-  margin-bottom: 7px;
+  font-size: 19px;
+  margin-bottom: 9px;
 }
 .ss-input {
   width: 100%;
-  padding: 13px 15px;
+  padding: 16px 18px;
   border-radius: 12px;
   border: 2px solid #b2dfdb;
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
   color: #2d3436;
   font-family: 'Baloo 2', cursive;
   transition: border-color 0.2s;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .ss-input:focus {
   border-color: #00b894;
@@ -117,24 +191,24 @@ input:focus {
   background: #fff5f5;
   color: #c0392b;
   border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 13px;
+  padding: 13px 16px;
+  font-size: 17px;
   font-weight: 600;
-  margin-bottom: 12px;
-  line-height: 1.7;
+  margin-bottom: 14px;
+  line-height: 1.8;
 }
 .ss-btn {
   width: 100%;
-  padding: 15px;
+  padding: 20px;
   border-radius: 14px;
   border: none;
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 800;
   cursor: pointer;
   background: linear-gradient(135deg, #00b894, #00cec9);
   color: white;
   box-shadow: 0 5px 18px rgba(0, 184, 148, 0.4);
-  margin-bottom: 22px;
+  margin-bottom: 24px;
   font-family: 'Baloo 2', cursive;
   transition: opacity 0.2s, transform 0.15s;
 }
@@ -148,57 +222,57 @@ input:focus {
 .ss-guide {
   background: #f0faf6;
   border-radius: 14px;
-  padding: 18px 20px;
+  padding: 20px 22px;
   border: 1.5px solid #b2dfdb;
 }
 .ss-guide-title {
   font-weight: 800;
   color: #0a6640;
-  font-size: 15px;
-  margin-bottom: 12px;
+  font-size: 20px;
+  margin-bottom: 14px;
 }
 .ss-steps {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 11px;
 }
 .ss-step {
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 600;
   color: #2d3436;
   display: flex;
   align-items: flex-start;
-  gap: 9px;
+  gap: 10px;
 }
 .ss-step-num {
   background: #00b894;
   color: white;
   border-radius: 50%;
-  width: 21px;
-  height: 21px;
+  width: 28px;
+  height: 28px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 800;
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 .ss-code {
   background: #1e3a2f;
   color: #a8f0d8;
   border-radius: 8px;
-  padding: 10px 13px;
-  font-size: 11px;
-  margin: 3px 0 3px 30px;
+  padding: 12px 14px;
+  font-size: 14px;
+  margin: 4px 0 4px 38px;
   font-family: monospace;
   overflow-x: auto;
   white-space: pre;
 }
 .ss-note {
-  font-size: 12px;
+  font-size: 17px;
   color: #4a7c68;
-  margin-top: 10px;
+  margin-top: 12px;
   font-weight: 600;
 }
 
@@ -212,34 +286,46 @@ input:focus {
   align-items: center;
 }
 
-/* Title */
 .gs-title-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .gs-title {
   margin: 0;
-  font-size: 38px;
+  font-size: 52px;
   font-weight: 800;
   color: white;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Score */
-.gs-score {
-  font-size: 28px;
-  font-weight: 700;
-  color: white;
+/* Score + counter row */
+.gs-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
   margin-bottom: 14px;
 }
+.gs-score {
+  font-size: 36px;
+  font-weight: 700;
+  color: white;
+}
+.gs-q-counter {
+  font-size: 30px;
+  font-weight: 800;
+  color: white;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 4px 18px;
+  border-radius: 20px;
+}
 
-/* Camera */
 .gs-cam-wrap {
   position: relative;
-  width: 640px;
-  height: 480px;
+  width: 720px;
+  height: 540px;
   border-radius: 20px;
   overflow: hidden;
   border: 5px solid white;
@@ -247,8 +333,8 @@ input:focus {
   margin-bottom: 10px;
 }
 .gs-webcam {
-  width: 640px;
-  height: 480px;
+  width: 720px;
+  height: 540px;
   display: block;
   transform: scaleX(-1);
 }
@@ -256,13 +342,12 @@ input:focus {
   position: absolute;
   top: 0;
   left: 0;
-  width: 640px;
-  height: 480px;
+  width: 720px;
+  height: 540px;
 }
 
-/* Face status */
 .gs-face-status {
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 600;
   color: white;
   margin-bottom: 14px;
@@ -274,21 +359,19 @@ input:focus {
   color: #ffe0e0;
 }
 
-/* Question card */
 .gs-q-card {
   background: white;
   border-radius: 16px;
-  padding: 16px 32px;
-  font-size: 32px;
+  padding: 20px 40px;
+  font-size: 40px;
   font-weight: 700;
   color: #1a3c2e;
-  width: 640px;
+  width: 720px;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-/* Answer buttons row */
 .gs-answers {
   display: flex;
   justify-content: center;
@@ -296,20 +379,28 @@ input:focus {
   margin-bottom: 12px;
 }
 .gs-answer {
-  width: 220px;
-  padding: 18px 20px;
-  border-radius: 16px;
-  font-size: 26px;
-  font-weight: 800;
+  width: 300px;
+  padding: 26px 22px;
+  border-radius: 18px;
   color: white;
   text-align: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   border: 3px solid transparent;
   transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 8px;
+}
+.gs-ans-dir {
+  font-size: 22px;
+  font-weight: 700;
+  opacity: 0.9;
+}
+.gs-ans-text {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.2;
 }
 .gs-ans-l {
   background: linear-gradient(135deg, #ff7675, #e84393);
@@ -327,21 +418,21 @@ input:focus {
   opacity: 0.55 !important;
 }
 
-/* Result popup */
+/* Result popup — với margin-top để tách khỏi đáp án */
 .gs-result-area {
-  height: 60px;
+  margin-top: 16px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
 }
 .gs-result-popup {
-  padding: 10px 28px;
-  border-radius: 14px;
-  font-size: 30px;
+  padding: 14px 36px;
+  border-radius: 16px;
+  font-size: 38px;
   font-weight: 800;
   color: white;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 .gs-correct-pop {
   background: linear-gradient(135deg, #00b894, #00cec9);
@@ -350,7 +441,6 @@ input:focus {
   background: linear-gradient(135deg, #d63031, #e17055);
 }
 
-/* Back btn */
 .gs-back-btn {
   position: absolute;
   top: 16px;
@@ -359,8 +449,8 @@ input:focus {
   border: 2px solid rgba(255, 255, 255, 0.6);
   color: white;
   border-radius: 10px;
-  padding: 5px 13px;
-  font-size: 14px;
+  padding: 8px 16px;
+  font-size: 17px;
   font-weight: 700;
   cursor: pointer;
   font-family: 'Baloo 2', cursive;
@@ -379,40 +469,40 @@ input:focus {
   border-radius: 24px;
   padding: 44px 40px;
   text-align: center;
-  max-width: 420px;
+  max-width: 480px;
   width: 100%;
   box-shadow: 0 16px 52px rgba(0, 0, 0, 0.18);
 }
 .gs-gameover-emoji {
-  font-size: 72px;
+  font-size: 88px;
 }
 .gs-gameover-title {
-  font-size: 32px;
+  font-size: 42px;
   font-weight: 800;
   color: #1a3c2e;
   margin: 10px 0 6px;
 }
 .gs-gameover-score {
-  font-size: 66px;
+  font-size: 80px;
   font-weight: 800;
   color: #00b894;
   line-height: 1;
 }
 .gs-gameover-pct {
-  font-size: 22px;
+  font-size: 30px;
   color: #4a7c68;
   font-weight: 600;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 .gs-gameover-msg {
-  font-size: 18px;
+  font-size: 24px;
   color: #2d3436;
-  margin: 18px 0;
+  margin: 20px 0;
   font-weight: 600;
 }
 .gs-gameover-btns {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -421,8 +511,8 @@ input:focus {
   color: white;
   border: none;
   border-radius: 14px;
-  padding: 12px 24px;
-  font-size: 17px;
+  padding: 16px 30px;
+  font-size: 22px;
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 5px 18px rgba(0, 184, 148, 0.38);
@@ -438,38 +528,32 @@ input:focus {
 }
 
 /* ══ RESPONSIVE ════════════════════════════════════════════════════════════ */
-
-/* Tablet (≤ 720px) */
 @media (max-width: 720px) {
   .gs-title {
-    font-size: 28px;
+    font-size: 32px;
   }
   .gs-score {
-    font-size: 22px;
-    margin-bottom: 10px;
+    font-size: 26px;
   }
-
+  .gs-q-counter {
+    font-size: 22px;
+  }
   .gs-cam-wrap {
     width: 100%;
     height: auto;
     aspect-ratio: 4/3;
     border-radius: 14px;
   }
-  .gs-webcam {
-    width: 100%;
-    height: 100%;
-  }
+  .gs-webcam,
   .gs-overlay {
     width: 100%;
     height: 100%;
   }
-
   .gs-q-card {
     width: 100%;
-    font-size: 24px;
-    padding: 14px 20px;
+    font-size: 28px;
+    padding: 16px 20px;
   }
-
   .gs-answers {
     gap: 16px;
     width: 100%;
@@ -477,95 +561,127 @@ input:focus {
   .gs-answer {
     width: 0;
     flex: 1;
-    font-size: 20px;
-    padding: 14px 10px;
+    padding: 16px 10px;
   }
-
-  .gs-face-status {
+  .gs-ans-text {
+    font-size: 26px;
+  }
+  .gs-ans-dir {
     font-size: 16px;
   }
+  .gs-face-status {
+    font-size: 20px;
+  }
   .gs-result-popup {
-    font-size: 24px;
+    font-size: 28px;
   }
-
-  .gs-back-btn {
-    font-size: 13px;
-    padding: 4px 10px;
+  .countdown-num {
+    font-size: 110px;
   }
-
+  .countdown-label {
+    font-size: 32px;
+  }
   .ss-card {
     padding: 28px 24px;
   }
+  .ss-title {
+    font-size: 34px;
+  }
 }
-
-/* Mobile (≤ 480px) */
 @media (max-width: 480px) {
   .gs-page {
     padding: 10px;
   }
   .gs-title {
-    font-size: 22px;
+    font-size: 26px;
   }
   .gs-score {
+    font-size: 22px;
+  }
+  .gs-q-counter {
     font-size: 18px;
-    margin-bottom: 8px;
+    padding: 3px 12px;
   }
-
+  .gs-topbar {
+    gap: 18px;
+    margin-bottom: 10px;
+  }
   .gs-q-card {
-    font-size: 20px;
-    padding: 12px 14px;
-    margin-bottom: 12px;
-  }
-
-  .gs-answers {
-    gap: 10px;
+    font-size: 23px;
+    padding: 13px 14px;
+    margin-bottom: 14px;
   }
   .gs-answer {
-    font-size: 17px;
-    padding: 12px 8px;
-    border-radius: 12px;
+    padding: 13px 8px;
+    border-radius: 13px;
   }
-
-  .gs-face-status {
+  .gs-ans-text {
+    font-size: 22px;
+  }
+  .gs-ans-dir {
     font-size: 14px;
+  }
+  .gs-face-status {
+    font-size: 16px;
     margin-bottom: 8px;
   }
   .gs-result-popup {
-    font-size: 20px;
-    padding: 8px 18px;
+    font-size: 24px;
+    padding: 10px 20px;
   }
   .gs-result-area {
-    height: 50px;
+    margin-top: 12px;
+    height: 60px;
   }
-
   .gs-back-btn {
-    font-size: 12px;
+    font-size: 13px;
     top: 10px;
     left: 10px;
+    padding: 6px 12px;
   }
-
-  .gs-gameover-card {
-    padding: 32px 24px;
+  .lang-btn-game {
+    font-size: 13px;
+    top: 10px;
+    right: 10px;
+    padding: 6px 12px;
   }
-  .gs-gameover-score {
-    font-size: 52px;
+  .countdown-num {
+    font-size: 90px;
   }
-  .gs-gameover-title {
+  .countdown-label {
     font-size: 26px;
   }
+  .gs-gameover-card {
+    padding: 32px 20px;
+  }
+  .gs-gameover-score {
+    font-size: 64px;
+  }
+  .gs-gameover-title {
+    font-size: 34px;
+  }
   .gs-gameover-msg {
-    font-size: 16px;
+    font-size: 20px;
   }
   .gs-replay-btn {
-    font-size: 15px;
-    padding: 10px 18px;
+    font-size: 19px;
+    padding: 13px 22px;
   }
-
   .ss-card {
     padding: 24px 18px;
-    border-radius: 18px;
   }
   .ss-title {
-    font-size: 24px;
+    font-size: 28px;
+  }
+  .ss-sub {
+    font-size: 17px;
+  }
+  .ss-btn {
+    font-size: 19px;
+    padding: 16px;
+  }
+  .lang-btn {
+    font-size: 15px;
+    padding: 8px 18px;
   }
 }
