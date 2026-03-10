@@ -142,7 +142,7 @@ input:focus {
   background: white;
   border-radius: 24px;
   padding: 36px 40px;
-  max-width: 620px;
+  max-width: 720px;
   width: 100%;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
 }
@@ -363,10 +363,10 @@ input:focus {
   background: white;
   border-radius: 16px;
   padding: 20px 40px;
-  font-size: 40px;
+  font-size: 60px;
   font-weight: 700;
   color: #1a3c2e;
-  width: 720px;
+  width: 1100px;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
@@ -375,7 +375,7 @@ input:focus {
 .gs-answers {
   display: flex;
   justify-content: center;
-  gap: 32px;
+  gap: 200px;
   margin-bottom: 12px;
 }
 .gs-answer {
