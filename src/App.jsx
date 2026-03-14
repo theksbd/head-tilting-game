@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
-import Webcam from 'react-webcam';
-import Papa from 'papaparse';
-import { FaceMesh } from '@mediapipe/face_mesh';
 import { Camera } from '@mediapipe/camera_utils';
+import { FaceMesh } from '@mediapipe/face_mesh';
+import Papa from 'papaparse';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Webcam from 'react-webcam';
+import { Analytics } from '@vercel/analytics/react';
 import './App.css';
 
 function shuffle(arr) {
@@ -494,22 +495,26 @@ export default function App() {
     else setQuestions(null);
   }
 
-  return questions ? (
-    <GameScreen
-      key={gameKey}
-      questions={questions}
-      onBack={handleBack}
-      lang={lang}
-      setLang={setLang}
-    />
-  ) : (
-    <SetupScreen
-      onStart={q => {
-        setGameKey(0);
-        setQuestions(q);
-      }}
-      lang={lang}
-      setLang={setLang}
-    />
+  return (
+    <div>
+      {questions ? (
+        <GameScreen
+          key={gameKey}
+          questions={questions}
+          onBack={handleBack}
+          lang={lang}
+          setLang={setLang}
+        />
+      ) : (
+        <SetupScreen
+          onStart={q => {
+            setGameKey(0);
+            setQuestions(q);
+          }}
+          lang={lang}
+          setLang={setLang}
+        />
+      )}
+    </div>
   );
 }
