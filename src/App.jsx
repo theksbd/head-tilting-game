@@ -3,7 +3,6 @@ import { FaceMesh } from '@mediapipe/face_mesh';
 import Papa from 'papaparse';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
-import { Analytics } from '@vercel/analytics/react';
 import './App.css';
 
 function shuffle(arr) {
@@ -515,7 +514,6 @@ export default function App() {
           setLang={setLang}
         />
       )}
-      <Analytics />
     </div>
   );
 }
