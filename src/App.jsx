@@ -483,6 +483,40 @@ function GameScreen({ questions: raw, onBack, lang, setLang }) {
   );
 }
 
+function Footer() {
+  const year = new Date().getFullYear();
+  return (
+    <footer
+      style={{
+        borderTop: '1px solid var(--border)',
+        padding: '14px 24px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 16,
+        color: 'var(--text-muted)',
+        gap: 4
+      }}
+    >
+      &copy; {year} Copyright by{' '}
+      <a
+        href='https://github.com/theksbd'
+        target='_blank'
+        rel='noopener noreferrer'
+        style={{
+          color: 'var(--accent)',
+          textDecoration: 'none',
+          fontWeight: 600
+        }}
+        onMouseEnter={e => (e.target.style.textDecoration = 'underline')}
+        onMouseLeave={e => (e.target.style.textDecoration = 'none')}
+      >
+        theksbd (Đỗ Thiện Hoàng)
+      </a>
+    </footer>
+  );
+}
+
 // ── Root ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [questions, setQuestions] = useState(null);
@@ -514,6 +548,7 @@ export default function App() {
           setLang={setLang}
         />
       )}
+      <Footer />
     </div>
   );
 }
